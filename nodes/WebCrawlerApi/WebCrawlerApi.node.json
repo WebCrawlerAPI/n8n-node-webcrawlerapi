@@ -1,5 +1,5 @@
 {
-	"node": "webcrawlerapi-node-n8n.webCrawlerApiNode",
+	"node": "node-n8n-webcrawlerapi.webCrawlerApiNode",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Web Scraping", "Data Extraction", "Productivity"],

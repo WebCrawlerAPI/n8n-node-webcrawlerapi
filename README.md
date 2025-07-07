@@ -44,7 +44,7 @@ To use this node, you need a WebCrawlerAPI credential:
 #### Installation
 
 ```bash
-npm install webcrawlerapi-node-n8n
+npm install node-n8n-webcrawlerapi
 ```
 
 #### Development
