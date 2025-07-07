@@ -1,0 +1,18 @@
+{
+	"node": "webcrawlerapi-node-n8n.webCrawlerApiNode",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Web Scraping", "Data Extraction", "Productivity"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://webcrawlerapi.com/docs/access-key"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://webcrawlerapi.com/docs"
+			}
+		]
+	}
+}

@@ -1,0 +1,40 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run linting
+        run: npm run lint
+        
+      - name: Check formatting
+        run: |
+          npm run format
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Code is not properly formatted. Please run 'npm run format'"
+            git diff
+            exit 1
+          fi
+        
+      - name: Build package
+        run: npm run build

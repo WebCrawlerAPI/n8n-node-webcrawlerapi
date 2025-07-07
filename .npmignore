@@ -1,0 +1,31 @@
+# System files
+.DS_Store
+*.tsbuildinfo
+
+# Source files (we publish only dist)
+nodes/
+credentials/
+tsconfig.json
+gulpfile.js
+
+# Development files
+.vscode/
+.editorconfig
+.eslintrc.js
+.eslintrc.prepublish.js
+.prettierrc.js
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
