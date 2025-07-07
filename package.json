@@ -1,6 +1,6 @@
 {
   "name": "node-n8n-webcrawlerapi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n community nodes for WebCrawler API integration",
   "keywords": [
     "n8n-community-node-package", "n8n", "webcrawler", "webcrawlerapi", "scraping", "api", "webcrawling", "ai"
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/WebCrawlerAPI/node-n8n-webcrawlerapi.git"
+    "url": "https://github.com/WebCrawlerAPI/n8n-node-webcrawlerapi.git"
   },
   "engines": {
     "node": ">=20.15"
