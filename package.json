@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-webcrawlerapi",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "n8n node for WebCrawler API integration - a website to markdown API for LLM and RAG",
   "keywords": [
     "n8n-community-node-package", "n8n", "webcrawler", "webcrawlerapi", "scraping", "api", "webcrawling", "ai"
