@@ -36,7 +36,7 @@
       "dist/credentials/WebCrawlerApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/WebCrawlerApi/WebCrawlerApi.node.js"
+      "dist/nodes/WebCrawlerApi/WebCrawlerApiNode.node.js"
     ]
   },
   "devDependencies": {
