@@ -46,11 +46,10 @@ export class WebCrawlerApi implements ICredentialType {
 		},
 		rules: [
 			{
-				type: 'responseSuccessBody',
+				type: 'responseCode',
 				properties: {
-					key: 'status',
-					value: 'ok',
-					message: 'API key test failed: status was not "ok" in response',
+					value: 200,
+					message: 'API key test failed: Invalid API key or network error',
 				},
 			},
 		],
