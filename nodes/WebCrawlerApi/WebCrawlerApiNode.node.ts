@@ -59,6 +59,13 @@ export class WebCrawlerApiNode implements INodeType {
 				default: '',
 				description: 'A prompt to run on the scraped content to extract specific information',
 			},
+			{
+				displayName: 'Extract Main Content Only',
+				name: 'main_content_only',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to extract only the main content of the page',
+			},
 		],
 	};
 
@@ -72,11 +79,13 @@ export class WebCrawlerApiNode implements INodeType {
 				const output_format = this.getNodeParameter('output_format', i, 'markdown') as string;
 				const clean_selectors = this.getNodeParameter('clean_selectors', i, '') as string;
 				const prompt = this.getNodeParameter('prompt', i, '') as string;
+				const main_content_only = this.getNodeParameter('main_content_only', i, false) as boolean;
 
 				const body: Record<string, any> = { url };
 				if (output_format) body.output_format = output_format;
 				if (clean_selectors) body.clean_selectors = clean_selectors;
 				if (prompt) body.prompt = prompt;
+				if (main_content_only !== undefined) body.main_content_only = main_content_only;
 
 				const response = await this.helpers.requestWithAuthentication.call(this, 'webCrawlerApi', {
 					method: 'POST',
