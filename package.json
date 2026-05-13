@@ -3,7 +3,14 @@
   "version": "0.1.8",
   "description": "n8n node for WebCrawler API integration - a website to markdown API for LLM and RAG",
   "keywords": [
-    "n8n-community-node-package", "n8n", "webcrawler", "webcrawlerapi", "scraping", "api", "webcrawling", "ai"
+    "n8n-community-node-package",
+    "n8n",
+    "webcrawler",
+    "webcrawlerapi",
+    "scraping",
+    "api",
+    "webcrawling",
+    "ai"
   ],
   "license": "MIT",
   "homepage": "",
@@ -40,12 +47,12 @@
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "~8.32.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-n8n-nodes-base": "^1.16.3",
+    "@typescript-eslint/parser": "^8.59.2",
+    "eslint": "^10.3.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.6",
     "gulp": "^5.0.0",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.2"
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "n8n-workflow": "*"

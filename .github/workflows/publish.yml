@@ -3,7 +3,10 @@ name: Publish to NPM
 on:
   push:
     tags:
-      - '*'
+      - '[0-9]+.[0-9]+.[0-9]+'
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
 
 jobs:
   publish:
@@ -35,8 +38,7 @@ jobs:
         
       - name: Validate tag matches package.json version
         run: |
-          # Extract version from tag (remove 'v' prefix if present)
-          TAG_VERSION=${GITHUB_REF_NAME#v}
+          TAG_VERSION=${GITHUB_REF_NAME}
           echo "Tag version: $TAG_VERSION"
           
           # Get version from package.json
