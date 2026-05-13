@@ -60,13 +60,17 @@ export class WebCrawlerApiNode implements INodeType {
 
 				const body: Record<string, any> = { url, output_formats: [output_format] };
 
-				const response = await this.helpers.httpRequestWithAuthentication.call(this, 'webCrawlerApi', {
-					method: 'POST',
-					url: 'https://api.webcrawlerapi.com/v2/scrape',
-					headers: { 'Content-Type': 'application/json' },
-					body,
-					json: true,
-				});
+				const response = await this.helpers.httpRequestWithAuthentication.call(
+					this,
+					'webCrawlerApi',
+					{
+						method: 'POST',
+						url: 'https://api.webcrawlerapi.com/v2/scrape',
+						headers: { 'Content-Type': 'application/json' },
+						body,
+						json: true,
+					},
+				);
 
 				if (!response.success) {
 					throw new NodeOperationError(
