@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^8.59.2",
-    "eslint": "^10.3.0",
+    "eslint": "^8.57.1",
     "eslint-plugin-n8n-nodes-base": "^1.16.6",
     "gulp": "^5.0.0",
     "prettier": "^3.8.3",
