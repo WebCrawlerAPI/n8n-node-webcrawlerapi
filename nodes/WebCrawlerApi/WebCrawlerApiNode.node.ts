@@ -3,8 +3,9 @@ import type {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	JsonObject,
 } from 'n8n-workflow';
-import { NodeOperationError } from 'n8n-workflow';
+import { NodeApiError, NodeOperationError } from 'n8n-workflow';
 
 export class WebCrawlerApiNode implements INodeType {
 	description: INodeTypeDescription = {
@@ -60,17 +61,22 @@ export class WebCrawlerApiNode implements INodeType {
 
 				const body: Record<string, any> = { url, output_formats: [output_format] };
 
-				const response = await this.helpers.httpRequestWithAuthentication.call(
-					this,
-					'webCrawlerApi',
-					{
-						method: 'POST',
-						url: 'https://api.webcrawlerapi.com/v2/scrape',
-						headers: { 'Content-Type': 'application/json' },
-						body,
-						json: true,
-					},
-				);
+				let response;
+				try {
+					response = await this.helpers.httpRequestWithAuthentication.call(
+						this,
+						'webCrawlerApi',
+						{
+							method: 'POST',
+							url: 'https://api.webcrawlerapi.com/v2/scrape',
+							headers: { 'Content-Type': 'application/json' },
+							body,
+							json: true,
+						},
+					);
+				} catch (error) {
+					throw new NodeApiError(this.getNode(), error as JsonObject, { itemIndex: i });
+				}
 
 				if (!response.success) {
 					throw new NodeOperationError(
@@ -85,7 +91,7 @@ export class WebCrawlerApiNode implements INodeType {
 				if (this.continueOnFail()) {
 					returnData.push({ json: { error: error.message }, pairedItem: i });
 				} else {
-					throw new NodeOperationError(this.getNode(), error, { itemIndex: i });
+					throw error;
 				}
 			}
 		}
