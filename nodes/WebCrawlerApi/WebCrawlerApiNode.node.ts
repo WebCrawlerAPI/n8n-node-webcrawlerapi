@@ -179,15 +179,15 @@ export class WebCrawlerApiNode implements INodeType {
 				name: 'agent_model',
 				type: 'options',
 				options: [
-					{ name: 'Gemini 3.1 Flash Lite (Default)', value: 'google/gemini-3.1-flash-lite-preview' },
-					{ name: 'Gemini 3 Flash', value: 'google/gemini-3-flash-preview' },
-					{ name: 'Gemini 3.1 Pro', value: 'google/gemini-3.1-pro-preview' },
-					{ name: 'GPT-5.4 Mini', value: 'openai/gpt-5.4-mini' },
-					{ name: 'GPT-5.4', value: 'openai/gpt-5.4' },
-					{ name: 'GPT-5.5', value: 'openai/gpt-5.5' },
 					{ name: 'Claude Sonnet 4.6', value: 'anthropic/claude-sonnet-4.6' },
+					{ name: 'Gemini 3 Flash', value: 'google/gemini-3-flash-preview' },
+					{ name: 'Gemini 3.1 Flash Lite', value: 'google/gemini-3.1-flash-lite-preview' },
+					{ name: 'Gemini 3.1 Pro', value: 'google/gemini-3.1-pro-preview' },
+					{ name: 'GPT-5.4', value: 'openai/gpt-5.4' },
+					{ name: 'GPT-5.4 Mini', value: 'openai/gpt-5.4-mini' },
+					{ name: 'GPT-5.5', value: 'openai/gpt-5.5' },
 				],
-				default: 'google/gemini-3.1-flash-lite-preview',
+				default: 'openai/gpt-5.4-mini',
 				description: 'LLM model to use for the agent',
 				displayOptions: { show: { operation: ['agent'] } },
 			},
@@ -378,7 +378,7 @@ export class WebCrawlerApiNode implements INodeType {
 					const maxSpendUsd = this.getNodeParameter('max_spend_usd', i, 1) as number;
 					const agentUrlsRaw = this.getNodeParameter('agent_urls', i, '') as string;
 					const seedUrlsOnly = this.getNodeParameter('seed_urls_only', i, false) as boolean;
-					const agentModel = this.getNodeParameter('agent_model', i, 'google/gemini-3.1-flash-lite-preview') as string;
+					const agentModel = this.getNodeParameter('agent_model', i, 'openai/gpt-5.4-mini') as string;
 					const outputSchemaRaw = this.getNodeParameter('output_schema', i, '') as string;
 
 					const agentBody: Record<string, unknown> = {
