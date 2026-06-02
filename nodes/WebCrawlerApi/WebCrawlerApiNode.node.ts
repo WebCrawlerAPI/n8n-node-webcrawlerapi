@@ -8,6 +8,13 @@ import type {
 import { NodeApiError, NodeOperationError } from 'n8n-workflow';
 
 const BASE_URL = 'https://api.webcrawlerapi.com';
+const sleep = (ms: number): Promise<void> =>
+	new Promise((resolve) =>
+		(globalThis as unknown as { setTimeout: (fn: () => void, ms: number) => void }).setTimeout(
+			resolve,
+			ms,
+		),
+	);
 
 export class WebCrawlerApiNode implements INodeType {
 	description: INodeTypeDescription = {
@@ -323,7 +330,7 @@ export class WebCrawlerApiNode implements INodeType {
 						if (status === 'done') break;
 
 						const delay = (jobData.recommended_pull_delay_ms as number) ?? 1000;
-						await new Promise<void>((resolve) => setTimeout(resolve, delay));
+						await sleep(delay);
 					}
 
 					// Fetch markdown
@@ -478,7 +485,7 @@ export class WebCrawlerApiNode implements INodeType {
 						if (agentStatus === 'done') break;
 
 						const agentDelay = (agentData.recommended_pull_delay_ms as number) ?? 3000;
-						await new Promise<void>((resolve) => setTimeout(resolve, agentDelay));
+						await sleep(agentDelay);
 					}
 
 					returnData.push({
