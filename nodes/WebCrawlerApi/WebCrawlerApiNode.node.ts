@@ -43,6 +43,12 @@ export class WebCrawlerApiNode implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'URL to Markdown',
+						value: 'url_to_markdown',
+						description: 'Convert a webpage to markdown',
+						action: 'Convert a webpage to markdown',
+					},
+					{
 						name: 'Scrape',
 						value: 'scrape',
 						description: 'Scrape a single page',
@@ -61,7 +67,17 @@ export class WebCrawlerApiNode implements INodeType {
 						action: 'Run an AI agent to extract data from web pages',
 					},
 				],
-				default: 'scrape',
+				default: 'url_to_markdown',
+			},
+			// URL to Markdown params
+			{
+				displayName: 'URL',
+				name: 'url_to_markdown_url',
+				type: 'string',
+				required: true,
+				default: '',
+				description: 'URL of the page to convert to markdown',
+				displayOptions: { show: { operation: ['url_to_markdown'] } },
 			},
 			// Scrape params
 			{
@@ -219,7 +235,36 @@ export class WebCrawlerApiNode implements INodeType {
 			try {
 				const operation = this.getNodeParameter('operation', i) as string;
 
-				if (operation === 'scrape') {
+				if (operation === 'url_to_markdown') {
+					const url = this.getNodeParameter('url_to_markdown_url', i) as string;
+
+					let response;
+					try {
+						response = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'webCrawlerApi',
+							{
+								method: 'POST',
+								url: `${BASE_URL}/v2/scrape`,
+								headers: { 'Content-Type': 'application/json' },
+								body: { url, output_formats: ['markdown'] },
+								json: true,
+							},
+						);
+					} catch (error) {
+						throw new NodeApiError(this.getNode(), error as JsonObject, { itemIndex: i });
+					}
+
+					if (!response.success) {
+						throw new NodeOperationError(
+							this.getNode(),
+							`[${response.status}] ${response.error_message || 'Unknown error'}`,
+							{ itemIndex: i },
+						);
+					}
+
+					returnData.push({ json: response });
+				} else if (operation === 'scrape') {
 					const url = this.getNodeParameter('url', i) as string;
 					const output_format = this.getNodeParameter('output_format', i, 'markdown') as string;
 
