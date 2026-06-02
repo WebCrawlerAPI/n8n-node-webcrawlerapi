@@ -45,7 +45,6 @@ export class WebCrawlerApiNode implements INodeType {
 					{
 						name: 'URL to Markdown',
 						value: 'url_to_markdown',
-						description: 'URL to Markdown',
 						action: 'Convert an URL to markdown',
 					},
 					{
