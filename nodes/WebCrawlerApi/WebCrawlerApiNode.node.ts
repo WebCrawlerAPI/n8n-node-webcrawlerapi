@@ -119,7 +119,7 @@ export class WebCrawlerApiNode implements INodeType {
 				name: 'respect_robots_txt',
 				type: 'boolean',
 				default: false,
-				description: 'Whether to honor the site\'s robots.txt rules',
+				description: "Whether to honor the site's robots.txt rules",
 				displayOptions: { show: { operation: ['crawl'] } },
 			},
 			{
@@ -135,7 +135,8 @@ export class WebCrawlerApiNode implements INodeType {
 				name: 'output_as_file',
 				type: 'boolean',
 				default: false,
-				description: 'Whether to return a URL to the combined markdown file instead of inline content',
+				description:
+					'Whether to return a URL to the combined markdown file instead of inline content',
 				displayOptions: { show: { operation: ['crawl'] } },
 			},
 			// Agent params
@@ -291,11 +292,9 @@ export class WebCrawlerApiNode implements INodeType {
 					const crawlDeadline = Date.now() + 30 * 60 * 1000;
 					while (true) {
 						if (Date.now() > crawlDeadline) {
-							throw new NodeOperationError(
-								this.getNode(),
-								'Crawl job timed out after 30 minutes',
-								{ itemIndex: i },
-							);
+							throw new NodeOperationError(this.getNode(), 'Crawl job timed out after 30 minutes', {
+								itemIndex: i,
+							});
 						}
 						try {
 							jobData = await this.helpers.httpRequestWithAuthentication.call(
@@ -378,7 +377,11 @@ export class WebCrawlerApiNode implements INodeType {
 					const maxSpendUsd = this.getNodeParameter('max_spend_usd', i, 1) as number;
 					const agentUrlsRaw = this.getNodeParameter('agent_urls', i, '') as string;
 					const seedUrlsOnly = this.getNodeParameter('seed_urls_only', i, false) as boolean;
-					const agentModel = this.getNodeParameter('agent_model', i, 'openai/gpt-5.4-mini') as string;
+					const agentModel = this.getNodeParameter(
+						'agent_model',
+						i,
+						'openai/gpt-5.4-mini',
+					) as string;
 					const outputSchemaRaw = this.getNodeParameter('output_schema', i, '') as string;
 
 					const agentBody: Record<string, unknown> = {
@@ -388,7 +391,10 @@ export class WebCrawlerApiNode implements INodeType {
 					};
 
 					if (agentUrlsRaw.trim()) {
-						agentBody.urls = agentUrlsRaw.split(',').map((u) => u.trim()).filter(Boolean);
+						agentBody.urls = agentUrlsRaw
+							.split(',')
+							.map((u) => u.trim())
+							.filter(Boolean);
 					}
 
 					if (seedUrlsOnly) {
@@ -399,11 +405,9 @@ export class WebCrawlerApiNode implements INodeType {
 						try {
 							agentBody.output_schema = JSON.parse(outputSchemaRaw) as Record<string, unknown>;
 						} catch {
-							throw new NodeOperationError(
-								this.getNode(),
-								'Output Schema must be valid JSON',
-								{ itemIndex: i },
-							);
+							throw new NodeOperationError(this.getNode(), 'Output Schema must be valid JSON', {
+								itemIndex: i,
+							});
 						}
 					}
 
@@ -437,11 +441,9 @@ export class WebCrawlerApiNode implements INodeType {
 					const agentDeadline = Date.now() + 30 * 60 * 1000;
 					while (true) {
 						if (Date.now() > agentDeadline) {
-							throw new NodeOperationError(
-								this.getNode(),
-								'Agent run timed out after 30 minutes',
-								{ itemIndex: i },
-							);
+							throw new NodeOperationError(this.getNode(), 'Agent run timed out after 30 minutes', {
+								itemIndex: i,
+							});
 						}
 						try {
 							agentData = await this.helpers.httpRequestWithAuthentication.call(
@@ -468,11 +470,9 @@ export class WebCrawlerApiNode implements INodeType {
 						}
 
 						if (agentStatus === 'canceled') {
-							throw new NodeOperationError(
-								this.getNode(),
-								'Agent run was canceled',
-								{ itemIndex: i },
-							);
+							throw new NodeOperationError(this.getNode(), 'Agent run was canceled', {
+								itemIndex: i,
+							});
 						}
 
 						if (agentStatus === 'done') break;
@@ -481,13 +481,13 @@ export class WebCrawlerApiNode implements INodeType {
 						await new Promise<void>((resolve) => setTimeout(resolve, agentDelay));
 					}
 
-					returnData.push({ json: agentData as Record<string, string | number | boolean | null | object> });
+					returnData.push({
+						json: agentData as Record<string, string | number | boolean | null | object>,
+					});
 				} else {
-					throw new NodeOperationError(
-						this.getNode(),
-						`Unknown operation: ${operation}`,
-						{ itemIndex: i },
-					);
+					throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`, {
+						itemIndex: i,
+					});
 				}
 			} catch (error) {
 				if (this.continueOnFail()) {
