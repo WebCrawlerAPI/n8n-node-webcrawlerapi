@@ -1,8 +1,8 @@
 {
 	"node": "node-n8n-webcrawlerapi.webCrawlerApiNode",
-	"nodeVersion": "1.1",
+	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
-	"categories": ["Web Scraping", "Data Extraction", "Productivity", "Webcrawling", "API", "AI"],
+	"categories": ["Development", "Productivity", "Utility"],
 	"resources": {
 		"credentialDocumentation": [
 			{

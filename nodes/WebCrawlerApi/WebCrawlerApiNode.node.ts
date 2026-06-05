@@ -5,16 +5,9 @@ import type {
 	INodeTypeDescription,
 	JsonObject,
 } from 'n8n-workflow';
-import { NodeApiError, NodeOperationError } from 'n8n-workflow';
+import { NodeApiError, NodeOperationError, sleep } from 'n8n-workflow';
 
 const BASE_URL = 'https://api.webcrawlerapi.com';
-const sleep = (ms: number): Promise<void> =>
-	new Promise((resolve) =>
-		(globalThis as unknown as { setTimeout: (fn: () => void, ms: number) => void }).setTimeout(
-			resolve,
-			ms,
-		),
-	);
 
 export class WebCrawlerApiNode implements INodeType {
 	description: INodeTypeDescription = {
