@@ -202,8 +202,9 @@ export class WebCrawlerApiNode implements INodeType {
 					{ name: 'GPT-5.4', value: 'openai/gpt-5.4' },
 					{ name: 'GPT-5.4 Mini', value: 'openai/gpt-5.4-mini' },
 					{ name: 'GPT-5.5', value: 'openai/gpt-5.5' },
+					{ name: 'GPT-5.6 Luna', value: 'openai/gpt-5.6-luna' },
 				],
-				default: 'openai/gpt-5.4-mini',
+				default: 'openai/gpt-5.6-luna',
 				description: 'LLM model to use for the agent',
 				displayOptions: { show: { operation: ['agent'] } },
 			},
@@ -424,7 +425,7 @@ export class WebCrawlerApiNode implements INodeType {
 					const agentModel = this.getNodeParameter(
 						'agent_model',
 						i,
-						'openai/gpt-5.4-mini',
+						'openai/gpt-5.6-luna',
 					) as string;
 					const outputSchemaRaw = this.getNodeParameter('output_schema', i, '') as string;
 
