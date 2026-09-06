@@ -5,7 +5,7 @@ import type {
 	INodeTypeDescription,
 	JsonObject,
 } from 'n8n-workflow';
-import { NodeApiError, NodeOperationError, sleep } from 'n8n-workflow';
+import { NodeApiError, NodeConnectionTypes, NodeOperationError, sleep } from 'n8n-workflow';
 
 const BASE_URL = 'https://api.webcrawlerapi.com';
 
@@ -16,12 +16,14 @@ export class WebCrawlerApiNode implements INodeType {
 		icon: 'file:webcrawlerapi.svg',
 		group: ['transform'],
 		version: 1,
+		subtitle: '={{$parameter["operation"]}}',
 		description: 'Scrape or crawl web pages with WebCrawlerAPI',
+		usableAsTool: true,
 		defaults: {
 			name: 'WebCrawlerAPI',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'webCrawlerApi',
@@ -256,7 +258,7 @@ export class WebCrawlerApiNode implements INodeType {
 						);
 					}
 
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				} else if (operation === 'scrape') {
 					const url = this.getNodeParameter('url', i) as string;
 					const output_format = this.getNodeParameter('output_format', i, 'markdown') as string;
@@ -288,7 +290,7 @@ export class WebCrawlerApiNode implements INodeType {
 						);
 					}
 
-					returnData.push({ json: response });
+					returnData.push({ json: response, pairedItem: { item: i } });
 				} else if (operation === 'crawl') {
 					const crawlUrl = this.getNodeParameter('crawl_url', i) as string;
 					const itemsLimit = this.getNodeParameter('items_limit', i, 10) as number;
@@ -393,6 +395,7 @@ export class WebCrawlerApiNode implements INodeType {
 								job: jobData,
 								content_url: markdownRef.content_url,
 							},
+							pairedItem: { item: i },
 						});
 					} else {
 						let markdownContent: string;
@@ -415,6 +418,7 @@ export class WebCrawlerApiNode implements INodeType {
 								job: jobData,
 								markdown: markdownContent,
 							},
+							pairedItem: { item: i },
 						});
 					}
 				} else if (operation === 'agent') {
@@ -528,6 +532,7 @@ export class WebCrawlerApiNode implements INodeType {
 
 					returnData.push({
 						json: agentData as Record<string, string | number | boolean | null | object>,
+						pairedItem: { item: i },
 					});
 				} else {
 					throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`, {
@@ -536,9 +541,18 @@ export class WebCrawlerApiNode implements INodeType {
 				}
 			} catch (error) {
 				if (this.continueOnFail()) {
-					returnData.push({ json: { error: (error as Error).message }, pairedItem: i });
+					returnData.push({
+						json: { error: (error as Error).message },
+						pairedItem: { item: i },
+					});
 				} else {
-					throw error;
+					// Already-wrapped n8n errors keep their context; anything else gets wrapped
+					// so the n8n UI never receives a raw error.
+					const nodeError =
+						error instanceof NodeApiError || error instanceof NodeOperationError
+							? error
+							: new NodeOperationError(this.getNode(), error as Error, { itemIndex: i });
+					throw nodeError;
 				}
 			}
 		}

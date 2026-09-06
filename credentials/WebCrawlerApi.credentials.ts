@@ -1,7 +1,8 @@
-import {
+import type {
 	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
+	Icon,
 	INodeProperties,
 } from 'n8n-workflow';
 
@@ -9,6 +10,7 @@ export class WebCrawlerApi implements ICredentialType {
 	name = 'webCrawlerApi';
 	displayName = 'WebCrawler API';
 	documentationUrl = 'https://webcrawlerapi.com/docs';
+	icon: Icon = 'file:webcrawlerapi.svg';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'API Key',

@@ -1,9 +1,12 @@
 const { FlatCompat } = require('@eslint/eslintrc');
 const typescriptParser = require('@typescript-eslint/parser');
 
+const communityNodes = require('@n8n/eslint-plugin-community-nodes');
+
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
 module.exports = [
+	communityNodes.configs.recommended,
 	{
 		ignores: ['eslint.config.js', 'eslint.config.prepublish.js', '**/*.js', '**/node_modules/**', '**/dist/**'],
 	},

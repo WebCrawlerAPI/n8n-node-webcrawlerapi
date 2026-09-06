@@ -1,5 +1,5 @@
 {
-	"node": "node-n8n-webcrawlerapi.webCrawlerApiNode",
+	"node": "n8n-nodes-webcrawlerapi.webCrawlerApiNode",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Development", "Productivity", "Utility"],
