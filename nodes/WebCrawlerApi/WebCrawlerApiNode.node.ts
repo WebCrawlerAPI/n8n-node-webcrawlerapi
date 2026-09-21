@@ -40,7 +40,8 @@ export class WebCrawlerApiNode implements INodeType {
 					{
 						name: 'URL to Markdown',
 						value: 'url_to_markdown',
-						description: 'Get markdown cleaned with an LLM (removes nav, ads, footers). See https://webcrawlerapi.com/docs/markdown-cleaning.',
+						description:
+							'Get markdown cleaned with an LLM (removes nav, ads, footers). See https://webcrawlerapi.com/docs/markdown-cleaning.',
 						action: 'Convert a url to llm cleaned markdown',
 					},
 					{
@@ -71,7 +72,8 @@ export class WebCrawlerApiNode implements INodeType {
 				type: 'string',
 				required: true,
 				default: '',
-				description: 'URL of the page to scrape and clean with an LLM into readable markdown. See https://webcrawlerapi.com/docs/markdown-cleaning.',
+				description:
+					'URL of the page to scrape and clean with an LLM into readable markdown. See https://webcrawlerapi.com/docs/markdown-cleaning.',
 				displayOptions: { show: { operation: ['url_to_markdown'] } },
 			},
 			// Scrape params
