@@ -40,7 +40,8 @@ export class WebCrawlerApiNode implements INodeType {
 					{
 						name: 'URL to Markdown',
 						value: 'url_to_markdown',
-						action: 'Convert an URL to markdown',
+						description: 'Get markdown cleaned with an LLM (removes nav, ads, footers). See https://webcrawlerapi.com/docs/markdown-cleaning.',
+						action: 'Convert a url to llm cleaned markdown',
 					},
 					{
 						name: 'Scrape',
@@ -70,7 +71,7 @@ export class WebCrawlerApiNode implements INodeType {
 				type: 'string',
 				required: true,
 				default: '',
-				description: 'URL of the page to convert to markdown',
+				description: 'URL of the page to scrape and clean with an LLM into readable markdown. See https://webcrawlerapi.com/docs/markdown-cleaning.',
 				displayOptions: { show: { operation: ['url_to_markdown'] } },
 			},
 			// Scrape params
@@ -240,9 +241,9 @@ export class WebCrawlerApiNode implements INodeType {
 							'webCrawlerApi',
 							{
 								method: 'POST',
-								url: `${BASE_URL}/v2/scrape`,
+								url: `${BASE_URL}/markdown`,
 								headers: { 'Content-Type': 'application/json' },
-								body: { url, output_formats: ['markdown'] },
+								body: { url },
 								json: true,
 							},
 						);
@@ -253,7 +254,7 @@ export class WebCrawlerApiNode implements INodeType {
 					if (!response.success) {
 						throw new NodeOperationError(
 							this.getNode(),
-							`[${response.status}] ${response.error_message || 'Unknown error'}`,
+							`[${response.error_code}] ${response.error_message || 'Unknown error'}`,
 							{ itemIndex: i },
 						);
 					}
