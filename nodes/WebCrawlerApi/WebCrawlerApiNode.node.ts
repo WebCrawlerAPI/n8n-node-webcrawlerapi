@@ -56,12 +56,10 @@ async function runBatchScrape(
 		}
 	};
 
-	const outputFormats = ctx.getNodeParameter('batch_output_formats', itemIndex, [
-		'markdown',
-	]) as string[];
-	const wait = ctx.getNodeParameter('batch_wait', itemIndex, true) as boolean;
-	const split = wait && (ctx.getNodeParameter('batch_split_items', itemIndex, false) as boolean);
 	const options = ctx.getNodeParameter('batch_options', itemIndex, {}) as {
+		output_formats?: string[];
+		wait?: boolean;
+		split_items?: boolean;
 		ignore_invalid_urls?: boolean;
 		main_content_only?: boolean;
 		max_age?: number;
@@ -69,6 +67,9 @@ async function runBatchScrape(
 		respect_robots_txt?: boolean;
 		webhook_url?: string;
 	};
+	const outputFormats = options.output_formats ?? ['markdown'];
+	const wait = options.wait ?? true;
+	const split = wait && (options.split_items ?? false);
 
 	const body: Record<string, unknown> = { urls };
 	if (outputFormats.length > 0) body.output_formats = outputFormats;
@@ -348,39 +349,6 @@ export class WebCrawlerApiNode implements INodeType {
 				},
 			},
 			{
-				displayName: 'Output Formats',
-				name: 'batch_output_formats',
-				type: 'multiOptions',
-				options: [
-					{ name: 'Cleaned', value: 'cleaned' },
-					{ name: 'HTML', value: 'html' },
-					{ name: 'Images', value: 'images' },
-					{ name: 'Links', value: 'links' },
-					{ name: 'Markdown', value: 'markdown' },
-				],
-				default: ['markdown'],
-				description: 'Output formats to generate for every URL',
-				displayOptions: { show: { operation: ['batch_scrape'] } },
-			},
-			{
-				displayName: 'Wait for Completion',
-				name: 'batch_wait',
-				type: 'boolean',
-				default: true,
-				description:
-					'Whether to poll until the batch finishes and return all items. If off, returns the batch ID right away.',
-				displayOptions: { show: { operation: ['batch_scrape'] } },
-			},
-			{
-				displayName: 'Split Items Into Separate Output Items',
-				name: 'batch_split_items',
-				type: 'boolean',
-				default: false,
-				description:
-					'Whether to output one n8n item per scraped URL instead of a single item with a data array',
-				displayOptions: { show: { operation: ['batch_scrape'], batch_wait: [true] } },
-			},
-			{
 				displayName: 'Additional Options',
 				name: 'batch_options',
 				type: 'collection',
@@ -418,11 +386,41 @@ export class WebCrawlerApiNode implements INodeType {
 						description: 'Max URLs scraped in parallel for this batch. 0 means no per-batch cap.',
 					},
 					{
+						displayName: 'Output Formats',
+						name: 'output_formats',
+						type: 'multiOptions',
+						options: [
+							{ name: 'Cleaned', value: 'cleaned' },
+							{ name: 'HTML', value: 'html' },
+							{ name: 'Images', value: 'images' },
+							{ name: 'Links', value: 'links' },
+							{ name: 'Markdown', value: 'markdown' },
+						],
+						default: ['markdown'],
+						description: 'Output formats to generate for every URL',
+					},
+					{
 						displayName: 'Respect Robots.txt',
 						name: 'respect_robots_txt',
 						type: 'boolean',
 						default: false,
 						description: "Whether to honor each website's robots.txt rules",
+					},
+					{
+						displayName: 'Split Items Into Separate Output Items',
+						name: 'split_items',
+						type: 'boolean',
+						default: false,
+						description:
+							'Whether to output one n8n item per scraped URL instead of a single item with a data array. Only applies when waiting for completion.',
+					},
+					{
+						displayName: 'Wait for Completion',
+						name: 'wait',
+						type: 'boolean',
+						default: true,
+						description:
+							'Whether to poll until the batch finishes and return all items. If off, returns the batch ID right away.',
 					},
 					{
 						displayName: 'Webhook URL',
